@@ -30,65 +30,69 @@ public class LoginController {
 
     @FXML
     public void login(ActionEvent actionEvent) {
-        // Change button color on click
         loginButton.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white;");
 
         String username = usernameField.getText();
         String password = passwordField.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Champs requis");
-            alert.setHeaderText(null);
-            alert.setContentText("Veuillez remplir tous les champs.");
-            alert.showAndWait();
+            showAlert("Champs requis", "Veuillez remplir tous les champs.", Alert.AlertType.WARNING);
             return;
         }
 
         try {
             User currentUser = new User(username, password);
             UserDAO userDAO = new UserDAO();
+            User foundUser = userDAO.find(currentUser);
 
-            if (userDAO.find(currentUser) == null) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("Vérifiez vos informations !");
-                alert.showAndWait();
-            } else {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/exercicetp6/users-list.fxml"));
-                Parent scene = loader.load();
-                Stage stage = new Stage();
-                stage.setTitle("Liste des utilisateurs");
-                stage.setScene(new Scene(scene));
-                stage.show();
-
-                // Close login window
-                Stage loginStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                loginStage.close();
+            if (foundUser == null) {
+                showAlert("Erreur", "Vérifiez vos informations !", Alert.AlertType.INFORMATION);
+                return;
             }
 
+            // Check if user is admin
+            if (!"admin".equals(foundUser.getRole())) {
+                showAlert("Accès refusé", "Seuls les administrateurs peuvent se connecter", Alert.AlertType.WARNING);
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/exercicetp6/users-list.fxml"));
+            Parent scene = loader.load();
+
+            // Pass the logged-in user to the controller
+            UserListController controller = loader.getController();
+            controller.setCurrentUser(foundUser);
+
+            Stage stage = new Stage();
+            stage.setTitle("Liste des utilisateurs");
+            stage.setScene(new Scene(scene));
+            stage.show();
+
+            // Close login window
+            ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+
         } catch (SQLException e) {
+            showAlert("Erreur SQL", "Une erreur s'est produite lors de l'accès à la base de données.", Alert.AlertType.ERROR);
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur SQL");
-            alert.setHeaderText(null);
-            alert.setContentText("Une erreur s'est produite lors de l'accès à la base de données.");
-            alert.showAndWait();
         } catch (IOException e) {
+            showAlert("Erreur d'affichage", "Impossible de charger l'interface utilisateur.", Alert.AlertType.ERROR);
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur d'affichage");
-            alert.setHeaderText(null);
-            alert.setContentText("Impossible de charger l'interface utilisateur.");
-            alert.showAndWait();
         }
     }
 
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     @FXML
     public void initialize() {
         usernameField.setOnMouseExited(event -> {
             usernameField.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial'; -fx-pref-width: 200px; -fx-padding: 6;");
         });
     }
+
+
 }

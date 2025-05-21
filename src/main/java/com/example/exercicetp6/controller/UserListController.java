@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,7 +24,10 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class UserListController implements Initializable {
+    private User currentUser;
 
+    @FXML
+    private Button addUserButton;
     @FXML
     private ListView<User> userListView;
 
@@ -42,31 +46,53 @@ public class UserListController implements Initializable {
     @FXML
     private TableColumn<User, String> emailColumn;
 
+    @FXML
+    private TableColumn<User, String> genderColumn;
+
+    @FXML
+    private TableColumn<User, String> roleColumn;
+
+    @FXML
+    private TableColumn<User, Boolean> activeColumn;
+
     // Create an observable list for the users
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        updateAddButtonState();
+    }
+
+    private void updateAddButtonState() {
+        if (currentUser != null && "admin".equals(currentUser.getRole())) {
+            addUserButton.setDisable(!currentUser.isActive());
+        } else {
+            addUserButton.setDisable(true);
+        }
+    }
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Associate columns with User class getters
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstname"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastname"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        activeColumn.setCellValueFactory(new PropertyValueFactory<>("active"));
+
+        updateAddButtonState();
 
         UserDAO userDAO = new UserDAO();
-        try{
-            userList=FXCollections.observableArrayList(userDAO.selectAll());
-        }
-        catch(SQLException e){
+        try {
+            userList = FXCollections.observableArrayList(userDAO.selectAll());
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        // Bind views to the observable list
         userListView.setItems(userList);
         userTableView.setItems(userList);
-
-
     }
+
 
     @FXML
     private void addUser(ActionEvent event) throws IOException {
@@ -85,6 +111,12 @@ public class UserListController implements Initializable {
 
     // Method to add a user from another window
     public void setUser(User user) {
-        userList.add(user);
+        // Don't add directly to userList
+        // Instead refresh the entire list from database
+        try {
+            userList.setAll(new UserDAO().selectAll()); // This replaces all items
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

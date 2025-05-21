@@ -6,15 +6,21 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String gender;
+    private String role;
+    private boolean active;
 
     public User() {}
 
-    public User(String firstname, String lastname, String username, String email, String password) {
+    public User(String firstname, String lastname, String username, String email, String password, String gender, String role, boolean active) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.gender = gender;
+        this.role = role;
+        this.active = active;
     }
 
     public User(String username, String password) {
@@ -62,6 +68,28 @@ public class User {
         this.password = password;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
     @Override
     public String toString() {
         return firstname + " " + lastname + " (" + username + ")";

@@ -3,65 +3,131 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.exercicetp6.controller.SignUpController"
-            prefHeight="500.0" prefWidth="600.0"
-            style="-fx-background-color: #f9f9f9;">
+            prefHeight="550.0" prefWidth="420.0"
+            style="-fx-background-color: #ffffff;">
 
-    <VBox alignment="CENTER" spacing="20.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+    <VBox alignment="TOP_CENTER" spacing="15" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
         <padding>
-            <Insets top="40" right="50" bottom="40" left="50"/>
+            <Insets top="30" right="30" bottom="20" left="30"/>
         </padding>
 
-        <Label text="Create Account"
-               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+        <!-- Header -->
+        <VBox alignment="CENTER" spacing="6">
+            <Rectangle width="40" height="40" arcWidth="8" arcHeight="8"
+                       fill="#2ecc71" strokeType="INSIDE" stroke="#27ae60">
+                <effect>
+                    <DropShadow color="rgba(46,204,113,0.3)" radius="6" spread="0.2"/>
+                </effect>
+            </Rectangle>
+            <Label text="Create Account"
+                   style="-fx-font-size: 20px; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+            <Label text="Join us today"
+                   style="-fx-font-size: 12px; -fx-text-fill: #95a5a6;"/>
+        </VBox>
 
-        <GridPane hgap="15" vgap="18" alignment="CENTER">
-            <Label text="First Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+        <!-- Form -->
+        <GridPane hgap="12" vgap="12" alignment="CENTER">
+            <!-- First Name -->
+            <Label text="First Name" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
             <TextField fx:id="firstNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                       promptText="Enter first name"
-                       style="-fx-pref-width: 240px; -fx-background-radius: 4;"/>
+                       promptText="John"
+                       style="-fx-pref-width: 240px; -fx-padding: 8;
+                              -fx-background-radius: 5; -fx-border-radius: 5;
+                              -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                              -fx-font-size: 13px;"/>
 
-            <Label text="Last Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+            <!-- Last Name -->
+            <Label text="Last Name" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
             <TextField fx:id="lastNameField" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                       promptText="Enter last name"
-                       style="-fx-pref-width: 240px; -fx-background-radius: 4;"/>
+                       promptText="Doe"
+                       style="-fx-pref-width: 240px; -fx-padding: 8;
+                              -fx-background-radius: 5; -fx-border-radius: 5;
+                              -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                              -fx-font-size: 13px;"/>
 
-            <Label text="Username:" GridPane.rowIndex="2" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+            <!-- Username -->
+            <Label text="Username" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
             <TextField fx:id="usernameField" GridPane.rowIndex="2" GridPane.columnIndex="1"
-                       promptText="Choose a username"
-                       style="-fx-pref-width: 240px; -fx-background-radius: 4;"/>
+                       promptText="johndoe123"
+                       style="-fx-pref-width: 240px; -fx-padding: 8;
+                              -fx-background-radius: 5; -fx-border-radius: 5;
+                              -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                              -fx-font-size: 13px;"/>
 
-            <Label text="Email:" GridPane.rowIndex="3" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+            <!-- Email -->
+            <Label text="Email" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
             <TextField fx:id="emailField" GridPane.rowIndex="3" GridPane.columnIndex="1"
-                       promptText="Enter your email"
-                       style="-fx-pref-width: 240px; -fx-background-radius: 4;"/>
+                       promptText="john@example.com"
+                       style="-fx-pref-width: 240px; -fx-padding: 8;
+                              -fx-background-radius: 5; -fx-border-radius: 5;
+                              -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                              -fx-font-size: 13px;"/>
 
-            <Label text="Password:" GridPane.rowIndex="4" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+            <!-- Password -->
+            <Label text="Password" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
             <PasswordField fx:id="passwordField" GridPane.rowIndex="4" GridPane.columnIndex="1"
-                           promptText="Create a password"
-                           style="-fx-pref-width: 240px; -fx-background-radius: 4;"/>
+                           promptText="••••••••"
+                           style="-fx-pref-width: 240px; -fx-padding: 8;
+                                  -fx-background-radius: 5; -fx-border-radius: 5;
+                                  -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                                  -fx-font-size: 13px;"/>
 
-            <Label text="Confirm Password:" GridPane.rowIndex="5" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+            <!-- Confirm Password -->
+            <Label text="Confirm Password" GridPane.rowIndex="5" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
             <PasswordField fx:id="confirmPasswordField" GridPane.rowIndex="5" GridPane.columnIndex="1"
-                           promptText="Confirm your password"
-                           style="-fx-pref-width: 240px; -fx-background-radius: 4;"/>
+                           promptText="••••••••"
+                           style="-fx-pref-width: 240px; -fx-padding: 8;
+                                  -fx-background-radius: 5; -fx-border-radius: 5;
+                                  -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                                  -fx-font-size: 13px;"/>
+
+            <!-- Role -->
+            <Label text="Role" GridPane.rowIndex="6" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
+            <ComboBox fx:id="roleComboBox" onAction="#selectRole" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                      style="-fx-pref-width: 240px; -fx-padding: 6;
+                             -fx-background-radius: 5; -fx-border-radius: 5;
+                             -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                             -fx-font-size: 13px;"/>
+
+            <!-- Gender -->
+            <Label text="Gender" GridPane.rowIndex="7" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
+            <HBox spacing="15" GridPane.rowIndex="7" GridPane.columnIndex="1" alignment="CENTER_LEFT">
+                <RadioButton fx:id="maleRadio" text="Male" toggleGroup="$genderGroup"
+                             style="-fx-font-size: 13px; -fx-text-fill: #2c3e50;"/>
+                <RadioButton fx:id="femaleRadio" text="Female" toggleGroup="$genderGroup"
+                             style="-fx-font-size: 13px; -fx-text-fill: #2c3e50;"/>
+            </HBox>
+
+            <!-- Active -->
+            <Label text="Active" GridPane.rowIndex="8" GridPane.columnIndex="0"
+                   style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;"/>
+            <CheckBox fx:id="activeCheckBox" GridPane.rowIndex="8" GridPane.columnIndex="1"
+                      style="-fx-font-size: 13px; -fx-text-fill: #2c3e50;"/>
         </GridPane>
 
-        <Button text="Sign Up" fx:id="registerButton"
+        <!-- Submit Button -->
+        <Button text="CREATE ACCOUNT" fx:id="registerButton"
                 onAction="#signUp"
                 style="-fx-background-color: #2ecc71; -fx-text-fill: white;
-                       -fx-font-size: 15px; -fx-font-weight: bold;
-                       -fx-padding: 10 24 10 24; -fx-background-radius: 8;"/>
+                       -fx-font-size: 13px; -fx-font-weight: bold;
+                       -fx-padding: 10 30; -fx-background-radius: 5;
+                       -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(46,204,113,0.3), 6, 0, 0, 2);"/>
     </VBox>
 </AnchorPane>

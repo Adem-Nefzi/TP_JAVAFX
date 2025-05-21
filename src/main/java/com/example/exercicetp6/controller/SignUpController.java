@@ -8,9 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,57 +32,86 @@ public class SignUpController {
 
     @FXML
     private PasswordField confirmPasswordField;
+    @FXML
+    private ComboBox<String> roleComboBox;
+    @FXML
+    private RadioButton maleRadio;
+    @FXML
+    private RadioButton femaleRadio;
+    @FXML
+    private ToggleGroup genderGroup;
+    @FXML
+    private CheckBox activeCheckBox;
+
 
     @FXML
+    public void initialize() {
+        roleComboBox.getItems().addAll("admin", "user");
+        activeCheckBox.setDisable(true);
+
+        genderGroup = new ToggleGroup();
+        maleRadio.setToggleGroup(genderGroup);
+        femaleRadio.setToggleGroup(genderGroup);
+    }
+
+    @FXML
+    private void selectRole() {
+        String selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
+        if ("user".equals(selectedRole)) {
+            activeCheckBox.setDisable(true);
+            activeCheckBox.setSelected(false);
+        } else {
+            activeCheckBox.setDisable(false);
+        }
+    }
+    @FXML
     public void signUp(ActionEvent event) {
-        // Validate input fields
         if (validateInputs()) {
             try {
-                // Create user object
-                User user = new User(
-                        firstNameField.getText(),
-                        lastNameField.getText(),
-                        usernameField.getText(),
-                        emailField.getText(),
-                        passwordField.getText()
-                );
+                // Get gender string from selected radio button
+                Toggle selectedToggle = genderGroup.getSelectedToggle();
+                String gender = (selectedToggle != null) ? ((RadioButton) selectedToggle).getText() : "";
+
+                // Get other fields
+                String firstName = firstNameField.getText();
+                String lastName = lastNameField.getText();
+                String username = usernameField.getText();
+                String email = emailField.getText();
+                String password = passwordField.getText();
+                String role = roleComboBox.getValue();
+                boolean active = activeCheckBox.isSelected();
+
+                // Now create User with correct parameters order:
+                User user = new User(firstName, lastName, username,email ,password,gender, role, active);
 
                 UserDAO userDAO = new UserDAO();
-                try {
-                    userDAO.create(user);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                userDAO.create(user);
 
-                // Display user information in console
                 System.out.println("New user created:");
                 System.out.println("First Name: " + user.getFirstname());
                 System.out.println("Last Name: " + user.getLastname());
                 System.out.println("Username: " + user.getUsername());
                 System.out.println("Email: " + user.getEmail());
 
-                // Load the users list window
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/exercicetp6/users-list.fxml"));
                 Parent root = loader.load();
 
-                // Get controller and pass the user object
                 UserListController controller = loader.getController();
                 controller.setUser(user);
 
-                // Display the new scene
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Liste des utilisateurs");
                 stage.show();
 
-                // Close the current window
-                ((Stage)(((Node)event.getSource()).getScene().getWindow())).close();
+                ((Stage) (((Node) event.getSource()).getScene().getWindow())).close();
 
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
     private boolean validateInputs() {
         // Check if fields are empty
@@ -96,6 +123,12 @@ public class SignUpController {
                     "Please fill in all fields.");
             return false;
         }
+        String selectedRole = roleComboBox.getSelectionModel().getSelectedItem();
+        boolean isActive = activeCheckBox.isSelected();
+        Toggle selectedToggle = genderGroup.getSelectedToggle();
+        String gender = (selectedToggle != null) ? ((RadioButton) selectedToggle).getText() : "";
+
+
 
         // Check if passwords match
         if (!passwordField.getText().equals(confirmPasswordField.getText())) {

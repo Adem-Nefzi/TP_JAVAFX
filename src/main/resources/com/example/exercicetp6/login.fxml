@@ -3,42 +3,59 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.exercicetp6.controller.LoginController"
-            prefHeight="450.0" prefWidth="600.0"
-            style="-fx-background-color: #ecf0f1;">
+            prefHeight="500.0" prefWidth="400.0"
+            style="-fx-background-color: #ffffff;">
 
-    <VBox alignment="CENTER" spacing="25.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+    <!-- Main Content -->
+    <VBox alignment="CENTER" spacing="30" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-
         <padding>
-            <Insets top="40" right="40" bottom="40" left="40"/>
+            <Insets top="60" right="40" bottom="60" left="40"/>
         </padding>
 
-        <Label text="Welcome Back"
-               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <!-- Logo/Header -->
+        <VBox alignment="CENTER" spacing="10">
+            <Rectangle width="60" height="60" arcWidth="15" arcHeight="15"
+                       fill="#3498db" strokeType="INSIDE" stroke="#2980b9">
+                <effect>
+                    <DropShadow color="rgba(41,128,185,0.3)" radius="10" spread="0.2"/>
+                </effect>
+            </Rectangle>
+            <Label text="Welcome"
+                   style="-fx-font-size: 24px; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+            <Label text="Sign in to continue"
+                   style="-fx-font-size: 13px; -fx-text-fill: #95a5a6;"/>
+        </VBox>
 
-        <GridPane hgap="12" vgap="18">
-            <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;" />
-            <TextField fx:id="usernameField" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                       promptText="Enter your username"
-                       style="-fx-pref-width: 220px; -fx-padding: 8;"/>
+        <!-- Login Form -->
+        <VBox spacing="25" style="-fx-padding: 0 20;">
+            <TextField fx:id="usernameField"
+                       promptText="Username"
+                       style="-fx-pref-width: 280px; -fx-padding: 12;
+                              -fx-background-radius: 6; -fx-border-radius: 6;
+                              -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                              -fx-font-size: 14px; -fx-focus-color: #3498db;"/>
 
-            <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                   style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;" />
-            <PasswordField fx:id="passwordField" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                           promptText="Enter your password"
-                           style="-fx-pref-width: 220px; -fx-padding: 8;"/>
-        </GridPane>
+            <PasswordField fx:id="passwordField"
+                           promptText="Password"
+                           style="-fx-pref-width: 280px; -fx-padding: 12;
+                                 -fx-background-radius: 6; -fx-border-radius: 6;
+                                 -fx-border-color: #e0e0e0; -fx-border-width: 1;
+                                 -fx-font-size: 14px; -fx-focus-color: #3498db;"/>
 
-        <Button text="Login" fx:id="loginButton"
-                onAction="#login"
-                style="-fx-background-color: #3498db; -fx-text-fill: white;
-                       -fx-font-size: 15px; -fx-padding: 10 30;
-                       -fx-background-radius: 6;"/>
-
+            <Button text="SIGN IN" fx:id="loginButton"
+                    onAction="#login"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white;
+                           -fx-font-size: 14px; -fx-font-weight: bold;
+                           -fx-padding: 12; -fx-background-radius: 6;
+                           -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.3), 8, 0, 0, 2);"/>
+        </VBox>
     </VBox>
 </AnchorPane>

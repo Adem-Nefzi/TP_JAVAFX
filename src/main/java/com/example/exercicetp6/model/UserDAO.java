@@ -14,50 +14,62 @@ public class UserDAO {
 
     public User find(User user) throws SQLException {
         statement = connect.createStatement();
-        rs = statement.executeQuery("SELECT * FROM user WHERE username = '" + user.getUsername() + "'" + " AND password = '" + user.getPassword() + "'");
+        String query = "SELECT * FROM user WHERE username = '" + user.getUsername() + "' AND password = '" + user.getPassword() + "'";
+        rs = statement.executeQuery(query);
+
         if (rs.next()) {
-            String username = rs.getString("username");
-            String password = rs.getString("password");
             String firstname = rs.getString("firstname");
             String lastname = rs.getString("lastname");
+            String username = rs.getString("username");
+            String password = rs.getString("password");
             String email = rs.getString("email");
+            String gender = rs.getString("gender");
+            String role = rs.getString("role");
+            boolean active = rs.getBoolean("active");
 
-            if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-                return new User(firstname, lastname, username, password, email);
-            }
+            return new User(firstname, lastname, username, email, password, gender, role, active);
         }
+
         return null;
     }
 
-    //AFFICHAGE DES UTILISATEURS
+    // ✅ SELECT ALL USERS (with all fields)
     public List<User> selectAll() throws SQLException {
         List<User> users = new ArrayList<>();
         statement = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         rs = statement.executeQuery("SELECT * FROM user");
 
         while (rs.next()) {
-            // Create a NEW User object for each row
             User user = new User();
             user.setFirstname(rs.getString("firstname"));
             user.setLastname(rs.getString("lastname"));
             user.setUsername(rs.getString("username"));
             user.setEmail(rs.getString("email"));
-            users.add(user); // Add the new object to the list
+            user.setPassword(rs.getString("password")); // optional
+            user.setGender(rs.getString("gender"));
+            user.setRole(rs.getString("role"));
+            user.setActive(rs.getBoolean("active"));
+            users.add(user);
         }
-
         return users;
     }
 
-
-    //CREATE USERS:
+    // ✅ CREATE NEW USER (with all fields)
     public void create(User user) throws SQLException {
-        statement = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+        statement = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
         String email = user.getEmail();
         String password = user.getPassword();
         String username = user.getUsername();
-        String query = "INSERT INTO user (firstname, lastname, username, password, email) VALUES ('"+firstname+"','"+lastname+"','"+username+"','"+password+"','"+email+"')";
+        String gender = user.getGender();
+        String role = user.getRole();
+        boolean active = user.isActive();
+
+        String query = "INSERT INTO user (firstname, lastname, username, password, email, gender, role, active) " +
+                "VALUES ('" + firstname + "', '" + lastname + "', '" + username + "', '" + password + "', '" +
+                email + "', '" + gender + "', '" + role + "', " + active + ")";
+
         int result = statement.executeUpdate(query);
     }
 }
